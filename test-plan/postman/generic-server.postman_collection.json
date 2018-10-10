@@ -1,0 +1,148 @@
+{
+	"variables": [],
+	"info": {
+		"name": "generic-server",
+		"_postman_id": "589c4c56-3624-a8fc-4b74-bd4b1942a4ad",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "{{ip_port}}",
+			"request": {
+				"url": "{{ip_port}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"Amit Rai\",\n\t\"email\": \"prdp989@gmail.com\",\n\t\"password\": \"xyz123\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "{{ip_port}}/user",
+			"request": {
+				"url": "{{ip_port}}/user",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "first_name",
+							"value": "Pradeep",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "Rai",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "prdp2989",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "company",
+							"value": "Whiznets Inc,",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "9911931128",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Create a user"
+			},
+			"response": []
+		},
+		{
+			"name": "{{ip_port}}/users",
+			"request": {
+				"url": "{{ip_port}}/users",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Get all users"
+			},
+			"response": []
+		},
+		{
+			"name": "{{ip_port}}/user/5bbdfb0fe44050144c5ca8e2",
+			"request": {
+				"url": "{{ip_port}}/user/5bbdfb0fe44050144c5ca8e2",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Get specific user by user id."
+			},
+			"response": []
+		},
+		{
+			"name": "{{ip_port}}/user/5bbdfb0fe44050144c5ca8e2",
+			"request": {
+				"url": "{{ip_port}}/user/5bbdfb0fe44050144c5ca8e2",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "phone",
+							"value": "9936900290",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "first_name",
+							"value": "Pradeep Kumar",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Update a user "
+			},
+			"response": []
+		},
+		{
+			"name": "{{ip_port}}/user/5bbdfb0fe44050144c5ca8e2",
+			"request": {
+				"url": "{{ip_port}}/user/5bbdfb0fe44050144c5ca8e2",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": "Delete a user"
+			},
+			"response": []
+		}
+	]
+}
