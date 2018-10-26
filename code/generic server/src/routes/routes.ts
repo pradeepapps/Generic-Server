@@ -1,39 +1,18 @@
+import * as passport from 'passport';
 import { Request, Response } from 'express';
 
-import { UserController } from "../controllers/user-controller";
+import { AuthRoutes } from './auth-routes';
+import { UserRoutes } from './user-routes';
+import { Config } from '../server/config';
+import { Constants } from '../utilities';
 
-export class Routes {
+export function initialize(app) {
 
-  public userController: UserController = new UserController();
+    new UserRoutes().initialize(app);
+    new AuthRoutes().initialize(app);
 
-  public initialize(app): void {
-
-    app.route('/')
-      .get((req: Request, res: Response) => {
-        res.status(200).send({
-          message: 'GET request successfulll!!!!'
-        })
-      })
-
-    // Create a new user
-    app.route('/user').post(this.userController.addNewUser);
-
-    // Get all users
-    app.route('/users').get(this.userController.getUsers);
-
-    // update a specific user
-    app.route('/user/:user_id').put(this.userController.updateUser);
-
-    // get a specific user
-    app.route('/user/:user_id').get(this.userController.getUserWithID);
-
-    // delete a specific user
-    app.route('/user/:user_id').delete(this.userController.deleteUser);
-
-    // app.route('/user/:user_id')
-    //   .get(this.userController.getUserWithID) // get a specific user
-    //   .put(this.userController.updateUser) // update a specific user
-    //   .delete(this.userController.deleteUser) // delete a specific user
-
-  }
+    app.route('/').get(passport.authenticate(Constants.authType.JWT), (req: Request, res: Response) => {
+        res.json({ message: 'Server running on ' + Config.EXPRESS_SERVER.ip + ':' +
+         Config.EXPRESS_SERVER.port });
+    });
 }

@@ -1,42 +1,51 @@
 {
-	"variables": [],
 	"info": {
+		"_postman_id": "0ab6b673-6d09-4600-84cd-98da88b82420",
 		"name": "generic-server",
-		"_postman_id": "589c4c56-3624-a8fc-4b74-bd4b1942a4ad",
-		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "{{ip_port}}",
 			"request": {
-				"url": "{{ip_port}}",
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/json",
-						"description": ""
+						"value": "application/json"
 					}
 				],
 				"body": {
 					"mode": "raw",
 					"raw": "{\n\t\"name\" : \"Amit Rai\",\n\t\"email\": \"prdp989@gmail.com\",\n\t\"password\": \"xyz123\"\n}"
 				},
-				"description": ""
+				"url": {
+					"raw": "{{ip_port}}",
+					"host": [
+						"{{ip_port}}"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "{{ip_port}}/user",
 			"request": {
-				"url": "{{ip_port}}/user",
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded",
-						"description": ""
+						"value": "application/x-www-form-urlencoded"
 					}
 				],
 				"body": {
@@ -45,46 +54,188 @@
 						{
 							"key": "first_name",
 							"value": "Pradeep",
-							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "last_name",
 							"value": "Rai",
-							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "email",
 							"value": "prdp2989",
-							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "company",
 							"value": "Whiznets Inc,",
-							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "phone",
 							"value": "9911931128",
-							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "abc123",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "prdp2989@gmail.com",
 							"type": "text"
 						}
 					]
 				},
+				"url": {
+					"raw": "{{ip_port}}/user",
+					"host": [
+						"{{ip_port}}"
+					],
+					"path": [
+						"user"
+					]
+				},
 				"description": "Create a user"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "{{ip_port}}/user",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "first_name",
+									"value": "Pradeep",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "Rai",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "prdp2989",
+									"type": "text"
+								},
+								{
+									"key": "company",
+									"value": "Whiznets Inc,",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "9911931128",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "abc123",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "prdp2989@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{ip_port}}/user",
+							"host": [
+								"{{ip_port}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "33"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"21-QtZDOnomXddCsRZSyem+berBhCs\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 21 Oct 2018 01:28:43 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"User already exist.\"\n}"
+				}
+			]
 		},
 		{
 			"name": "{{ip_port}}/users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "141b5043-ded7-4ae3-93df-dc78eda82465",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"USER_ID\", jsonData[0]._id);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
-				"url": "{{ip_port}}/users",
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ip_port}}/users",
+					"host": [
+						"{{ip_port}}"
+					],
+					"path": [
+						"users"
+					]
+				},
 				"description": "Get all users"
 			},
 			"response": []
@@ -92,10 +243,32 @@
 		{
 			"name": "{{ip_port}}/user/5bbdfb0fe44050144c5ca8e2",
 			"request": {
-				"url": "{{ip_port}}/user/5bbdfb0fe44050144c5ca8e2",
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ip_port}}/user/{{USER_ID}}",
+					"host": [
+						"{{ip_port}}"
+					],
+					"path": [
+						"user",
+						"{{USER_ID}}"
+					]
+				},
 				"description": "Get specific user by user id."
 			},
 			"response": []
@@ -103,13 +276,21 @@
 		{
 			"name": "{{ip_port}}/user/5bbdfb0fe44050144c5ca8e2",
 			"request": {
-				"url": "{{ip_port}}/user/5bbdfb0fe44050144c5ca8e2",
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "PUT",
 				"header": [
 					{
 						"key": "Content-Type",
-						"value": "application/x-www-form-urlencoded",
-						"description": ""
+						"value": "application/x-www-form-urlencoded"
 					}
 				],
 				"body": {
@@ -118,15 +299,23 @@
 						{
 							"key": "phone",
 							"value": "9936900290",
-							"description": "",
 							"type": "text"
 						},
 						{
 							"key": "first_name",
-							"value": "Pradeep Kumar",
-							"description": "",
+							"value": "Pradeep Kumar Rai",
 							"type": "text"
 						}
+					]
+				},
+				"url": {
+					"raw": "{{ip_port}}/user/{{USER_ID}}",
+					"host": [
+						"{{ip_port}}"
+					],
+					"path": [
+						"user",
+						"{{USER_ID}}"
 					]
 				},
 				"description": "Update a user "
@@ -136,11 +325,103 @@
 		{
 			"name": "{{ip_port}}/user/5bbdfb0fe44050144c5ca8e2",
 			"request": {
-				"url": "{{ip_port}}/user/5bbdfb0fe44050144c5ca8e2",
 				"method": "DELETE",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ip_port}}/user/{{USER_ID}}",
+					"host": [
+						"{{ip_port}}"
+					],
+					"path": [
+						"user",
+						"{{USER_ID}}"
+					]
+				},
 				"description": "Delete a user"
+			},
+			"response": []
+		},
+		{
+			"name": "{{ip_port}}/login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "498fdd81-8c0b-4463-92de-322011b31dd8",
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"TOKEN\", jsonData.token);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "prdp2989@gmail.com",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "abc123",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ip_port}}/login",
+					"host": [
+						"{{ip_port}}"
+					],
+					"path": [
+						"login"
+					]
+				},
+				"description": "Login user"
+			},
+			"response": []
+		},
+		{
+			"name": "{{ip_port}}/logout",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{ip_port}}/logout",
+					"host": [
+						"{{ip_port}}"
+					],
+					"path": [
+						"logout"
+					]
+				},
+				"description": "Logout user."
 			},
 			"response": []
 		}
