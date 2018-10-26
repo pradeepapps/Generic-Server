@@ -6,9 +6,9 @@ A generic server using Typescript, Express, & Node.js Platform.
 
 You will need the following things properly installed on your computer.
 
-[Git](https://nodejs.org/en/download/)
-[Node.js (with npm)](https://nodejs.org/en/download/)
-[MnogoDB](https://nodejs.org/en/download/)
+* [Git](https://nodejs.org/en/download/)
+* [Node.js (with npm)](https://nodejs.org/en/download/)
+* [MnogoDB](https://nodejs.org/en/download/)
 
 
 ## Installation
