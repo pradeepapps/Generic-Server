@@ -14,9 +14,9 @@ You will need the following things properly installed on your computer.
 ## Installation
 
 ```
-git clone https://github.com/pradeepkumarrai/Generic-Server.git
-cd Generic-Server
-npm install
+# git clone https://github.com/pradeepkumarrai/Generic-Server.git
+# cd Generic-Server
+# npm install
 ```
 
 ## REST APIs
