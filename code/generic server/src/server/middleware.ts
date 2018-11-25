@@ -1,15 +1,18 @@
+import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as morgan from 'morgan';
 import * as passport from 'passport';
 import * as PassportJwt from 'passport-jwt';
 import * as PassportHttp from 'passport-http';
 import * as mongoose from 'mongoose';
+import * as compression from 'compression';
+import * as path from 'path';
 
 import { UserSchema } from '../models/user';
 import { ApiLimiter } from '../routes/api-rate-limiter';
 import { LoggerStream } from '../diagnostic/logger';
+import * as CONFIG from '../server/config.json';
 import logger from '../diagnostic/logger';
-import { Config } from './config';
 
 const User = mongoose.model('User', UserSchema);
 
@@ -17,7 +20,9 @@ export function initialize(app) {
 
     logger.debug('Initialize middleware...');
 
-    // app.use(app.static(path.join(__dirname, 'public')));
+    app.use(compression());
+    app.use(express.static('public'));
+    // app.use('/static', express.static(path.join(__dirname, 'public')))
 
     // parse application/json
     app.use(bodyParser.json({ limit: '50mb' }));
@@ -74,18 +79,18 @@ export function initialize(app) {
         done(null, true);
     }));
 
-    // HTTP Bearer authentication strategy
+    // HTTP JWT authentication strategy
     const JwtStrategy = PassportJwt.Strategy;
     const ExtractJwt = PassportJwt.ExtractJwt;
     const jwtOption: any = {};
 
     jwtOption.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-    jwtOption.secretOrKey = Config.JWT_TOKEN.secret_key;
-    jwtOption.algorithms = Config.JWT_TOKEN.algorithm[0];
-    jwtOption.ignoreExpiration = Config.JWT_TOKEN.token_ignore_expiry;
+    jwtOption.secretOrKey = CONFIG.jwt_token.secret_key;
+    jwtOption.algorithms = CONFIG.jwt_token.algorithm[0];
+    jwtOption.ignoreExpiration = CONFIG.jwt_token.token_ignore_expiry;
     jwtOption.passReqToCallback = true;
-    jwtOption.issuer = Config.JWT_TOKEN.issuer;
-    jwtOption.audience = Config.JWT_TOKEN.audience;
+    jwtOption.issuer = CONFIG.jwt_token.issuer;
+    jwtOption.audience = CONFIG.jwt_token.audience;
 
     passport.use(new JwtStrategy(jwtOption, (req, jwtPayload, done) => {
         User.findOne({ _id: jwtPayload.id }, (err, user) => {

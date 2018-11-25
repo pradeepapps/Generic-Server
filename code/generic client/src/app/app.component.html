@@ -1,0 +1,7 @@
+<!-- <mat-toolbar color="primary">{{ title }}</mat-toolbar> -->
+
+<button mat-button *ngIf="pwaService.promptEvent" (click)="pwaService.promptEvent.prompt()">Install</button>
+
+<app-login></app-login>
+
+<router-outlet></router-outlet>

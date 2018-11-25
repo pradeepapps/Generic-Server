@@ -1,0 +1,31 @@
+{
+    "app_name" : "Generic Server",
+    
+    "express_server" : {
+        "ip": "localhost",
+        "port": "3000",
+        "https": false
+    },
+
+    "mongodb_server" : {
+        "url" : "mongodb://pradeep:prdp2989@ds261302.mlab.com:61302/userdb"
+    },
+
+    "jwt_token" : {
+        "expire_in" : 3600,
+        "secret_key" : "prdp2989",
+        "algorithm" : ["HS256", "HS384"],
+        "token_ignore_expiry" : false,
+        "issuer" : "",
+        "audience" : ""
+    },
+
+    "log" : {
+        "console" : {
+            "state" : true
+        },
+        "file" : {
+            "state" : true
+        }
+    }
+}

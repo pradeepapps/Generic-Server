@@ -1,9 +1,18 @@
 import * as mongoose from 'mongoose';
 import * as jwt from 'jsonwebtoken';
 import logger from '../diagnostic/logger';
-import { Config } from '../server/config';
+import * as CONFIG from '../server/config.json';
 
 const { Schema } = mongoose;
+// const Schema = mongoose.Schema;
+// const ObjectId = Schema.ObjectId;
+// const mongoose = require('mongoose');
+
+// const schema = mongoose.Schema({
+//     path : {type: String , required: true},
+//     title: {type: String , required: true}
+// });
+// module.export = mongoose.model('game', schema);
 
 export const UserSchema = new Schema({
     first_name: {
@@ -52,10 +61,9 @@ UserSchema.methods.validatePassword = function(password) {
  */
 UserSchema.methods.generateJwtToken = function() {
     logger.debug('In generateJwtToken...');
-
     return jwt.sign(
         { id: this._id },
-        Config.JWT_TOKEN.secret_key,
-        { expiresIn: Config.JWT_TOKEN.expire_in }
+        CONFIG.jwt_token.secret_key,
+        { expiresIn: CONFIG.jwt_token.expire_in }
     );
 };

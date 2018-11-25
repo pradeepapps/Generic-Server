@@ -1,34 +1,30 @@
+import * as express from 'express';
 import * as passport from 'passport';
 
 import { UserController } from '../controllers/user-controller';
 import { ApiLimiter } from '../routes/api-rate-limiter';
 import { Constants } from '../utilities';
 
-export class UserRoutes {
+const router = express.Router();
+const userController: UserController = new UserController();
 
-    public userController: UserController = new UserController();
+// Create a new user
+router.post('/user', ApiLimiter.NEW_USER, userController.addNewUser);
 
-    public initialize(app): void {
+// Get all users
+router.get('/users', ApiLimiter.DEFAULT, passport.authenticate(Constants.authType.JWT,
+    { session: false }), userController.getUsers);
 
-        // Create a new user
-        app.route('/user').post(ApiLimiter.NEW_USER, this.userController.addNewUser);
+// Get a specific user
+router.get('/user/:user_id', ApiLimiter.DEFAULT, passport.authenticate(Constants.authType.JWT,
+    { session: false }), userController.getUserWithID);
 
-        // Get all users
-        app.route('/users').get(ApiLimiter.DEFAULT, passport.authenticate(Constants.authType.JWT,
-             { session: false }), this.userController.getUsers);
+// Update a specific user
+router.put('/user/:user_id', ApiLimiter.DEFAULT, passport.authenticate(Constants.authType.JWT,
+    { session: false }), userController.updateUser);
 
-        app.route('/user/:user_id')
+// Delete a specific user
+router.delete('/user/:user_id', ApiLimiter.DEFAULT, passport.authenticate(Constants.authType.JWT,
+    { session: false }), userController.deleteUser);
 
-            // get a specific user
-            .get(ApiLimiter.DEFAULT, passport.authenticate(Constants.authType.JWT,
-                 { session: false }), this.userController.getUserWithID)
-
-            // update a specific user
-            .put(ApiLimiter.DEFAULT, passport.authenticate(Constants.authType.JWT,
-                { session: false }), this.userController.updateUser)
-
-            // delete a specific user
-            .delete(ApiLimiter.DEFAULT, passport.authenticate(Constants.authType.JWT,
-                { session: false }), this.userController.deleteUser);
-    }
-}
+module.exports = router;

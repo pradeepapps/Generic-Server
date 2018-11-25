@@ -5,6 +5,8 @@
     "pretty": false,
     "sourceMap": false,
     "declaration": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "target": "es6",
     "outDir": "./dist",
     "baseUrl": "./src"

@@ -1,6 +1,5 @@
 import * as winston from 'winston';
-
-import { Config } from '../server/config';
+import * as CONFIG from '../server/config.json';
 
 const options = {
     file: {
@@ -25,11 +24,11 @@ const options = {
 
 const transportList = [];
 
-if (Config.LOG.console.state === true && process.env.NODE_ENV !== 'production') {
+if (CONFIG.log.console.state === true && process.env.NODE_ENV !== 'production') {
     transportList.push(new (winston.transports.Console)(options.console));
 }
 
-if (Config.LOG.file.state === true) {
+if (CONFIG.log.file.state === true) {
     transportList.push(new winston.transports.File(options.file));
 }
 
@@ -49,6 +48,7 @@ const logger = winston.createLogger({
 });
 
 const env = process.env.NODE_ENV === 'production' ? 'Production' : 'Development';
+
 logger.debug(env + ' instance...');
 
 export class LoggerStream {

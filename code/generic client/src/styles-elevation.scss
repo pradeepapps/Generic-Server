@@ -1,0 +1,10 @@
+@import '~@angular/material/theming';
+
+.elevation {
+  @include mat-elevation-transition;
+  @include mat-elevation(2);
+
+  &:active {
+    @include mat-elevation(8);
+  }
+}
