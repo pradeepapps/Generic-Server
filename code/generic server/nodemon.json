@@ -1,0 +1,6 @@
+{
+    "restartable": "rs",
+    "ext": "js,ts,html,json",
+    "ignore": ["dist"],
+    "watch": ["./angular-server", "./services", "server.js"]
+  }

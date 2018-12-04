@@ -1,0 +1,21 @@
+define({
+  "name": "Generic Server - Node.js Express Mongodb & Typescript",
+  "version": "1.0.0",
+  "description": "A Generic Server REST API html documentation.",
+  "title": "Generic Server - Node.js Express Mongodb & Typescript",
+  "header": {
+    "title": "My own header title"
+  },
+  "footer": {
+    "title": "My own footer title"
+  },
+  "sampleUrl": false,
+  "defaultVersion": "0.0.0",
+  "apidoc": "0.3.0",
+  "generator": {
+    "name": "apidoc",
+    "time": "2018-12-02T12:52:49.528Z",
+    "url": "http://apidocjs.com",
+    "version": "0.17.7"
+  }
+});

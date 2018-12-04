@@ -1,0 +1,12 @@
+{ 
+    "name": "Generic Server - Node.js Express Mongodb & Typescript",
+    "version": "1.0.0",
+    "description": "A Generic Server REST API html documentation.",
+    "title": "Generic Server - Node.js Express Mongodb & Typescript",
+    "header": {
+        "title": "My own header title"
+      },
+      "footer": {
+        "title": "My own footer title"
+      }
+}

@@ -1,4 +1,4 @@
-import * as RateLimit from 'express-rate-limit';
+import RateLimit from 'express-rate-limit';
 import logger from '../diagnostic/logger';
 
 export class ApiLimiter {

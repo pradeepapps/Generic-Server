@@ -1,106 +1,86 @@
-import * as express from 'express';
-import * as bodyParser from 'body-parser';
-import * as morgan from 'morgan';
-import * as passport from 'passport';
-import * as PassportJwt from 'passport-jwt';
-import * as PassportHttp from 'passport-http';
-import * as mongoose from 'mongoose';
-import * as compression from 'compression';
-import * as path from 'path';
+/**********************************************************************************************************************
+-- <copyright company="Company Name">
+-- (c) 2019 Company Name
+-- </copyright>
+***********************************************************************************************************************
+-- Project     : Generic Server
+-- File        : middleware.ts
+-- Author      : PR
+-- Version     : 0.1
+-- Date        : 02-Dec-2018
+-- Status      : Initial Version
+-- Description : Configure middleware for express server.
+--
+-- Modification History
+-----------------------------------------------------------------------------------------------------------------------
+Date         | By  | Version | Change Description
+-----------------------------------------------------------------------------------------------------------------------
+02-Dec-2018  | PR  | 0.1     | Initial version
+**********************************************************************************************************************/
 
-import { UserSchema } from '../models/user';
+import express from 'express';
+import helmet from 'helmet';
+import bodyParser from 'body-parser';
+import morgan from 'morgan';
+import passport from 'passport';
+import compression from 'compression';
+import expressValidator from 'express-validator';
+
+import authController from '../controllers/auth_controller';
 import { ApiLimiter } from '../routes/api-rate-limiter';
 import { LoggerStream } from '../diagnostic/logger';
-import * as CONFIG from '../server/config.json';
+import config from '../server/config.json';
 import logger from '../diagnostic/logger';
-
-const User = mongoose.model('User', UserSchema);
 
 export function initialize(app) {
 
-    logger.debug('Initialize middleware...');
+  logger.debug('Initialize middleware...');
 
-    app.use(compression());
-    app.use(express.static('public'));
-    // app.use('/static', express.static(path.join(__dirname, 'public')))
+  // Protect app from some well-known web vulnerabilities.
+  app.use(helmet());
 
-    // parse application/json
-    app.use(bodyParser.json({ limit: '50mb' }));
+  // Compress response bodies for all request.
+  app.use(compression());
 
-    // support text/plain type post data
-    // app.use(bodyParser.text());
+  //
+  app.use(express.static('public'));
+  // app.use('/static', express.static(path.join(__dirname, 'public')))
 
-    // support application/x-www-form-urlencoded post data
-    app.use(bodyParser.urlencoded({ extended: false }));
+  // Parse request body to application/json
+  app.use(bodyParser.json({ limit: '50mb' }));
 
-    // app.use(require('cookie-parser')());
+  // support text/plain type post data
+  // app.use(bodyParser.text());
 
-    // support http logs
+  // support application/x-www-form-urlencoded post data
+  app.use(bodyParser.urlencoded({ extended: false }));
+
+  // app.use(require('cookie-parser')());
+
+  // support http logs
+  if (config.http_server.logging) {
     app.use(morgan('combined', { stream: new LoggerStream() }));
+  }
 
-    // API rate limiter
-    app.use(ApiLimiter.DEFAULT);
+  // API rate limiter
+  app.use(ApiLimiter.DEFAULT);
 
-    // app.use(require('express-session')({
-    //     secret: 'keyboard cat',
-    //     resave: true,
-    //     saveUninitialized: true
-    // }));
+  // app.use(require('express-session')({
+  //     secret: 'keyboard cat',
+  //     resave: true,
+  //     saveUninitialized: true
+  // }));
 
-    // Initialize passport
-    app.use(passport.initialize());
-    app.use(passport.session());
-    passport.serializeUser((user, done) => {
-        done(null, user._id);
-    });
-    passport.deserializeUser((id, done) => {
-      User.findById(id, (err, user1) => {
-        done(err, user1);
-      });
-    });
+  // Initialize passport
+  app.use(passport.initialize());
+  app.use(passport.session());
 
-    // HTTP Basic authentication strategy
-    passport.use(new PassportHttp.BasicStrategy({ passReqToCallback: true }, (req, username, password, done) => {
-        req.body.username = username;
-        User.findOne({ username: username }, (err, user) => {
-            req.body.password = password;
-            return done(err, user);
-        });
-    }));
+  // Validate request body parameters.
+  app.use(expressValidator());
 
-    // HTTP Digest authentication strategy
-    passport.use(new PassportHttp.DigestStrategy({ passReqToCallback: true, qop: 'auth' }, (username, done) => {
-        User.findOne({ username: username }, (err, user) => {
-            if (err) { return done(err); }
-            if (!user) { return done(null, false); }
-            return done(null, user, user.password);
-        });
-    }, (params, done) => {
-        done(null, true);
-    }));
-
-    // HTTP JWT authentication strategy
-    const JwtStrategy = PassportJwt.Strategy;
-    const ExtractJwt = PassportJwt.ExtractJwt;
-    const jwtOption: any = {};
-
-    jwtOption.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-    jwtOption.secretOrKey = CONFIG.jwt_token.secret_key;
-    jwtOption.algorithms = CONFIG.jwt_token.algorithm[0];
-    jwtOption.ignoreExpiration = CONFIG.jwt_token.token_ignore_expiry;
-    jwtOption.passReqToCallback = true;
-    jwtOption.issuer = CONFIG.jwt_token.issuer;
-    jwtOption.audience = CONFIG.jwt_token.audience;
-
-    passport.use(new JwtStrategy(jwtOption, (req, jwtPayload, done) => {
-        User.findOne({ _id: jwtPayload.id }, (err, user) => {
-            if (err) {
-                return done(err, false);
-            } else if (user) {
-                return done(null, user);
-            } else {
-                return done(null, false);
-            }
-        });
-    }));
+  // Initialize passport strategy.
+  // app.use(authController.default.initialize());
+  authController.initialize();
 }
+
+export default this;
